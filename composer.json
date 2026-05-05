@@ -1,0 +1,13 @@
+{
+    "name": "ksfraser/ksf_fa_loyalty",
+    "description": "Customer Loyalty Program for FrontAccounting (depends on CRM)",
+    "type": "frontaccounting-module",
+    "require": {
+        "ksfraser/ksf_fa_crm": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ksf\\FA\\Loyalty\\": "src/"
+        }
+    }
+}
