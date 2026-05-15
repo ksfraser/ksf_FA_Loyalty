@@ -8,6 +8,7 @@ define('SS_LOYALTY', 118 << 8);
 
 class hooks_fa_loyalty extends hooks {
     var $module_name = 'fa_loyalty';
+    var $version = '1.0.0';
 
     function install_options($app) {
         global $path_to_root;
