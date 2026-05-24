@@ -4,7 +4,7 @@
 - **Module**: ksf_FA_Loyalty
 - **Type**: FrontAccounting Platform Adapter
 - **Version**: 1.0.0
-- **Date**: 2026-05-13
+- **Date**: 2026-05-24
 
 ---
 
@@ -314,6 +314,47 @@ ksf_FA_Loyalty/
 
 ---
 
+## 11. RBAC Integration (ksfraser/rbac)
+
+### 11.1 Module Registration
+
+ksf_FA_Loyalty registers with ksfraser/rbac:
+- **record_types**: 'loyalty_account', 'loyalty_transaction', 'coupon'
+- **projections**: 'public' (tier, points_balance, transaction_date, coupon_code), 'full' (all fields including points_expiry, coupon_discount, transaction details)
+- **allow_invite**: false
+
+### 11.2 Entity Projections
+
+| Entity | PUBLIC Fields | FULL Fields |
+|--------|---------------|-------------|
+| CustomerLoyalty | tier_level, points_balance, enrollment_date | + points_expiry, lifetime_points, last_activity, linked_customer_id |
+| LoyaltyTransaction | points, type (earn/burn), date, description | + reference_order_id, created_by, expiry_date, linked_coupon_id |
+| Coupon | code, discount_type, discount_value, status, valid_from/to | + usage_limit, times_used, created_by, exclusion_rules, cost_center |
+
+### 11.3 Access Model
+
+- **Loyalty Admin**: FULL to all loyalty accounts, transactions, coupons — requires PROJECTION_FULL
+- **Customer Service**: View customer loyalty tier/balance (PROJECTION_PUBLIC), can issue manual adjustments (can_edit)
+- **Marketing**: Create/manage coupons (can_create + can_edit on coupon type), view loyalty tiers for segmentation (PROJECTION_PUBLIC)
+- **Customer (via portal)**: View own loyalty account (PROJECTION_PUBLIC via {customerPersonId}_individual team)
+- **Finance**: View cost/liability data (PROJECTION_FULL), can_export for reporting
+
+### 11.4 SQL Enforcement
+
+Standard RBAC JOIN pattern against 0_rbac_record_access for all loyalty queries.
+
+### 11.5 Persons Registry
+
+Loyalty accounts link to customers via `customer_person_id` → 0_crm_persons.id. This enables the customer portal access pattern via the person-registry two-legged JOIN.
+
+### 11.6 Soft Delete
+
+- Coupons use soft delete (deactivated → deleted=1)
+- Loyalty transactions are append-only (never deleted, audit requirement)
+- Hard delete is super-admin only
+
+---
+
 *Document Version: 1.0.0*
-*Last Updated: 2026-05-13*
+*Last Updated: 2026-05-24*
 *Author: KSFII Development Team*

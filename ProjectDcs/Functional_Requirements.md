@@ -4,7 +4,7 @@
 - **Module**: ksf_FA_Loyalty
 - **Type**: FrontAccounting Platform Adapter
 - **Version**: 1.0.0
-- **Date**: 2026-05-13
+- **Date**: 2026-05-24
 
 ---
 
@@ -264,6 +264,79 @@ CREATE TABLE IF NOT EXISTS `fa_loyalty_transactions` (
 
 ---
 
+## 6. RBAC Integration Requirements
+
+### 6.1 RBAC Integration
+
+#### FR-LOY-007: RBAC Integration
+
+**Description:** All loyalty queries use the RBAC JOIN pattern against `0_rbac_record_access` to enforce record-level access control for loyalty accounts, transactions, and coupons.
+
+**Acceptance Criteria:**
+- [ ] Every SELECT query on loyalty_accounts, loyalty_transactions, and coupons includes RBAC JOIN
+- [ ] Queries filter by `ra.module = 'loyalty'` and appropriate `ra.record_type`
+- [ ] Inactive records are excluded (`ra.inactive = 0`)
+- [ ] User must be a member of a team with `can_view = 1`
+
+---
+
+#### FR-LOY-008: DTO Projections
+
+**Description:** Loyalty account, transaction, and coupon entities define PUBLIC and FULL field projections for RBAC-scoped data access.
+
+| Entity | PUBLIC Fields | FULL Fields |
+|--------|---------------|-------------|
+| CustomerLoyalty | tier_level, points_balance, enrollment_date | + points_expiry, lifetime_points, last_activity, linked_customer_id |
+| LoyaltyTransaction | points, type (earn/burn), date, description | + reference_order_id, created_by, expiry_date, linked_coupon_id |
+| Coupon | code, discount_type, discount_value, status, valid_from/to | + usage_limit, times_used, created_by, exclusion_rules, cost_center |
+
+**Acceptance Criteria:**
+- [ ] PUBLIC projection accessible with PROJECTION_PUBLIC permission
+- [ ] FULL projection requires PROJECTION_FULL permission
+- [ ] PUBLIC fields exclude financial/cost data and internal references
+
+---
+
+#### FR-LOY-009: Soft Delete
+
+**Description:** Coupons use soft delete (`deleted=1`) when deactivated. Loyalty transactions are append-only (never deleted).
+
+**Acceptance Criteria:**
+- [ ] Deactivated coupons set `deleted=1` instead of hard-deleting rows
+- [ ] Soft-deleted coupons excluded from default queries
+- [ ] Loyalty transactions are append-only — no delete operation permitted
+- [ ] Hard delete is super-admin only
+
+---
+
+#### FR-LOY-010: Persons Registry
+
+**Description:** Loyalty accounts link to customers via `customer_person_id` → `0_crm_persons.id`, enabling the customer portal access pattern via the person-registry two-legged JOIN.
+
+**Acceptance Criteria:**
+- [ ] Foreign key from `fa_customer_loyalty.customer_person_id` to `0_crm_persons.id`
+- [ ] Customer portal uses `{customerPersonId}_individual` team pattern for self-service access
+- [ ] RBAC JOIN resolves portal access via person-registry relationship
+
+---
+
+#### FR-LOY-011: Audit
+
+**Description:** Key loyalty operations are logged to the RBAC audit log for compliance and traceability.
+
+**Audited Events:**
+- Points adjustments (manual earn/burn)
+- Coupon creation and usage
+- Tier level changes
+- Enrollment and deactivation
+
+**Acceptance Criteria:**
+- [ ] All audited events create audit log entries
+- [ ] Audit entries include user ID, timestamp, and before/after values
+- [ ] Audit log is append-only (no deletion or modification)
+
+---
+
 *Document Version: 1.0.0*
-*Last Updated: 2026-05-13*
+*Last Updated: 2026-05-24*
 *Author: KSFII Development Team*
