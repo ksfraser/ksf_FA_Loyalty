@@ -1,3 +1,11 @@
 -- ksf_FA_Loyalty Module Schema
--- Placeholder: Add module-specific tables here
--- Uses @TB_PREF@ for table prefix
+--
+-- The two module-owned tables live in their own files so that
+-- update_databases() can gate each one on its own table (a single
+-- install.sql gated on one table is unsound: if that one table existed,
+-- the other would never be created).
+--
+--   sql/ksf_loyalty_balances.sql      -> 0_ksf_loyalty_balances
+--   sql/ksf_loyalty_transactions.sql  -> 0_ksf_loyalty_transactions
+--
+-- The FA install engine replaces the literal 0_ with TB_PREF.

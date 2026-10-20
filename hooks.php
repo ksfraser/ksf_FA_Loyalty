@@ -83,14 +83,14 @@ class hooks_ksf_FA_Loyalty extends hooks {
     function activate_extension($company, $check_only=true) {
         $this->ensure_composer_dependencies();
         
-        // Apply sql/install.sql using update_databases()
-        // This handles @TB_PREF@ replacement automatically
-        if (file_exists(dirname(__FILE__) . '/sql/install.sql')) {
-            $updates = array('install.sql' => array($this->module_name));
-            return $this->update_databases($company, $updates, $check_only);
-        }
-        
-        return true;
+        // One sql/<table>.sql per table, each gated on its own table, so a
+        // partially-installed database gets the missing tables individually.
+        // The FA install engine replaces the literal 0_ with TB_PREF.
+        $updates = array(
+            'ksf_loyalty_balances.sql'     => array('ksf_loyalty_balances'),
+            'ksf_loyalty_transactions.sql' => array('ksf_loyalty_transactions'),
+        );
+        return $this->update_databases($company, $updates, $check_only);
     }
 
     /**

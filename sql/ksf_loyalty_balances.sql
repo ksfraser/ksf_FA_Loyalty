@@ -1,7 +1,7 @@
--- fa_customer_loyalty table
+-- 0_ksf_loyalty_balances table
 -- Customer Loyalty Program (depends on ksf_FA_CRM)
 
-CREATE TABLE IF NOT EXISTS `fa_customer_loyalty` (
+CREATE TABLE IF NOT EXISTS `0_ksf_loyalty_balances` (
     `loyalty_id` INT(11) NOT NULL AUTO_INCREMENT,
     `customer_person_id` INT(11) NOT NULL COMMENT 'FK to 0_crm_persons',
     `points_balance` INT(11) DEFAULT 0,
