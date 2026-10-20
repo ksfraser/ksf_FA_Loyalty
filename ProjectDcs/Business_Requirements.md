@@ -113,7 +113,7 @@ fa_customer_loyalty
 ├── enrollment_date (DATE)
 └── created_at (TIMESTAMP)
 
-fa_loyalty_transactions
+ksf_loyalty_transactions
 ├── transaction_id (PK, INT)
 ├── loyalty_id (FK → fa_customer_loyalty)
 ├── transaction_type (VARCHAR: EARN/REDEEM/ADJUST/EXPIRE)

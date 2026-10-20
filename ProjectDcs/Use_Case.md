@@ -175,7 +175,7 @@
     - Customer enrolled (loyalty_id exists)
 11. System executes:
     - UPDATE fa_customer_loyalty SET points_balance = points_balance + 100
-    - INSERT INTO fa_loyalty_transactions (...)
+    - INSERT INTO ksf_loyalty_transactions (...)
 12. System displays success: "100 points awarded to customer"
 13. Points balance updated in display
 ```
@@ -216,7 +216,7 @@
     - Points amount <= customer balance
 9. System executes:
     - UPDATE fa_customer_loyalty SET points_balance = points_balance - 50
-    - INSERT INTO fa_loyalty_transactions (type='REDEEM', ...)
+    - INSERT INTO ksf_loyalty_transactions (type='REDEEM', ...)
 10. System displays success
 ```
 
@@ -298,7 +298,7 @@
 ```
 1. User views customer loyalty status (UC-LOY-002)
 2. User clicks "View Full History" or "Transactions" tab
-3. System retrieves transactions from fa_loyalty_transactions
+3. System retrieves transactions from ksf_loyalty_transactions
 4. System orders by created_at DESC
 5. System displays transaction list:
    - Date

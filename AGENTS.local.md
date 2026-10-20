@@ -8,7 +8,7 @@ This repository implements **Customer Loyalty Program** similar to OpenProject's
 ksf_FA_Loyalty/
 ├── sql/                    # Database schemas (FA TB_PREF tables)
 │   ├── fa_customer_loyalty.sql
-│   ├── fa_loyalty_transactions.sql
+│   ├── ksf_loyalty_transactions.sql
 │   └── fa_loyalty_tiers.sql
 ├── includes/              # FA-specific DB classes
 │   ├── loyalty_db.inc

@@ -245,9 +245,9 @@ CREATE TABLE IF NOT EXISTS `fa_customer_loyalty` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
-### 5.2 fa_loyalty_transactions
+### 5.2 ksf_loyalty_transactions
 ```sql
-CREATE TABLE IF NOT EXISTS `fa_loyalty_transactions` (
+CREATE TABLE IF NOT EXISTS `ksf_loyalty_transactions` (
     `transaction_id` INT(11) NOT NULL AUTO_INCREMENT,
     `loyalty_id` INT(11) NOT NULL,
     `transaction_type` VARCHAR(20) NOT NULL COMMENT 'EARN/REDEEM/ADJUST/EXPIRE',

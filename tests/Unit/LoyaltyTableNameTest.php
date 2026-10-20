@@ -8,10 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * The loyalty tables were created UNPREFIXED (`fa_customer_loyalty`,
- * `fa_loyalty_transactions`) but read as `TB_PREF . "fa_customer_loyalty"`,
- * i.e. `0_fa_customer_loyalty`. Neither name exists: the schema wrote
+ * `ksf_loyalty_transactions`) but read as `TB_PREF . "fa_customer_loyalty"`.
+ * Neither name exists: the schema wrote
  * `fa_customer_loyalty` with no company prefix at all, and the code asked
- * for `0_fa_customer_loyalty`. Every read and write therefore failed with
+ * for the legacy fa_-prefixed customer_loyalty table. Every read and write failed with
  * MySQL error 1146.
  *
  * The tables are module-owned (a loyalty record is not FA core data), so
@@ -37,7 +37,7 @@ class LoyaltyTableNameTest extends TestCase
         $this->assertStringNotContainsString(
             'fa_customer_loyalty',
             $contents,
-            'includes/loyalty_db.inc must not address 0_fa_customer_loyalty: that table is created by no schema'
+            'includes/loyalty_db.inc must not address the fa_customer_loyalty table: no schema creates it'
         );
     }
 

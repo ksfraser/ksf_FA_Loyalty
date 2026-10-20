@@ -35,7 +35,7 @@ The FA Loyalty module follows the **Business Logic + Platform Adapter** pattern:
 |-----------|------|----------------|
 | Hooks | hooks.php | FA integration, menu registration, table creation |
 | Customer Loyalty DB | includes/loyalty_db.inc | CRUD for fa_customer_loyalty |
-| Transaction DB | includes/loyalty_transactions_db.inc | CRUD for fa_loyalty_transactions |
+| Transaction DB | includes/loyalty_transactions_db.inc | CRUD for ksf_loyalty_transactions |
 | Coupon DB | includes/coupons_db.inc | Coupon management (future) |
 | SQL | sql/*.sql | Database schema definition |
 
@@ -84,7 +84,7 @@ The FA Loyalty module follows the **Business Logic + Platform Adapter** pattern:
 │     │                                                  │
 │     ▼                                                  │
 ├──────────────────────────────────────────────────────────┐
-│                  fa_loyalty_transactions                 │
+│                  ksf_loyalty_transactions                 │
 ├──────────────────────────────────────────────────────────┤
 │ PK  transaction_id    INT(11) AUTO_INCREMENT              │
 │ FK  loyalty_id        INT(11) NOT NULL                   │
@@ -169,7 +169,7 @@ The FA Loyalty module follows the **Business Logic + Platform Adapter** pattern:
 ┌──────────────────────────────────────────────────────────┐
 │    Execute SQL files:                                    │
 │    - sql/fa_customer_loyalty.sql                         │
-│    - sql/fa_loyalty_transactions.sql                     │
+│    - sql/ksf_loyalty_transactions.sql                     │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -286,7 +286,7 @@ ksf_FA_Loyalty/
 │   └── coupons_db.inc          # Coupon management (future)
 ├── sql/
 │   ├── fa_customer_loyalty.sql  # Customer loyalty schema
-│   └── fa_loyalty_transactions.sql # Transaction schema
+│   └── ksf_loyalty_transactions.sql # Transaction schema
 ├── composer.json
 └── ProjectDcs/
     ├── Business_Requirements.md
